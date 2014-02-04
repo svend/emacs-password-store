@@ -42,7 +42,6 @@
   (or (getenv "PASSWORD_STORE_DIR")
       "~/.password-store"))
 
-;;;###autoload
 (defun password-store-list (&optional subdir)
   "List password entries under SUBDIR."
   (unless subdir (setq subdir ""))
