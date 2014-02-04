@@ -65,7 +65,7 @@
 (defun password-store-get (entry)
   "Return password for ENTRY.
 
-Returns the fist line of the password data."
+Returns the first line of the password data."
   (car (s-lines (shell-command-to-string (concat "pass " entry)))))
 
 ;;;###autoload
