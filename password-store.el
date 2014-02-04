@@ -52,6 +52,13 @@
 			(f-files dir (lambda (file) (equal (f-ext file) "gpg")) t))))))
 
 ;;;###autoload
+(defun password-store-get (entry)
+  "Return password for ENTRY.
+
+Returns the first line of the password data."
+  (car (s-lines (shell-command-to-string (concat "pass " entry)))))
+
+;;;###autoload
 (defun password-store-clear ()
   "Clear password in kill ring."
   (interactive)
@@ -60,13 +67,6 @@
 	(setcar password-store-kill-ring-pointer "")
 	(setq password-store-kill-ring-pointer nil)
 	(message "Password cleared"))))
-
-;;;###autoload
-(defun password-store-get (entry)
-  "Return password for ENTRY.
-
-Returns the first line of the password data."
-  (car (s-lines (shell-command-to-string (concat "pass " entry)))))
 
 ;;;###autoload
 (defun password-store-copy (entry)
