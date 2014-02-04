@@ -69,11 +69,12 @@ Returns the first line of the password data."
   (car (s-lines (shell-command-to-string (concat "pass " entry)))))
 
 ;;;###autoload
-(defun password-store-show (entry)
+(defun password-store-copy (entry)
   "Add password for ENTRY to kill ring.
 
 Clear previous password from kill ring.  Pointer to kill ring is
-stored in `password-store-kill-ring-pointer'"
+stored in `password-store-kill-ring-pointer'.  Password is cleared
+after 45 seconds."
   (interactive (list (completing-read "Password entry: " (password-store-list))))
   (let ((password (password-store-get entry)))
     (password-store-clear)
