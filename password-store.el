@@ -93,6 +93,6 @@ avoid sending a password to the browser."
     (if (or (string-prefix-p "http://" url)
 	    (string-prefix-p "https://" url))
 	(browse-url url)
-      (error "String does not look like a URL"))))
+      (error "%s" "String does not look like a URL"))))
 
 ;;; password-store.el ends here
