@@ -84,9 +84,15 @@ after 45 seconds."
 
 ;;;###autoload
 (defun password-store-url (entry)
-  "Browse URL stored in ENTRY."
+  "Browse URL stored in ENTRY.
+
+This will only browse URLs that start with http:// or http:// to
+avoid sending a password to the browser."
   (interactive (list (completing-read "Password entry: " (password-store-list))))
   (let ((url (password-store-get entry)))
-	(browse-url url)))
+    (if (or (string-prefix-p "http://" url)
+	    (string-prefix-p "https://" url))
+	(browse-url url)
+      (message "Error: text does not look like a URL"))))
 
 ;;; password-store.el ends here
