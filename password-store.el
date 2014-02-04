@@ -51,6 +51,7 @@
 	(mapcar 'f-no-ext
 		(mapcar (lambda (file) (f-relative file (password-store-dir)))
 			(f-files dir (lambda (file) (equal (f-ext file) "gpg")) t))))))
+
 ;;;###autoload
 (defun password-store-clear ()
   "Clear password in kill ring."
