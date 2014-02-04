@@ -83,4 +83,11 @@ after 45 seconds."
     (setq password-store-kill-ring-pointer kill-ring-yank-pointer)
     (run-at-time "45 sec" nil 'password-store-clear)))
 
+;;;###autoload
+(defun password-store-url (entry)
+  "Browse URL stored in ENTRY."
+  (interactive (list (completing-read "Password entry: " (password-store-list))))
+  (let ((url (password-store-get entry)))
+	(browse-url url)))
+
 ;;; password-store.el ends here
