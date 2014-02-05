@@ -56,7 +56,7 @@
   "Return password for ENTRY.
 
 Returns the first line of the password data."
-  (car (s-lines (shell-command-to-string (concat "pass " entry)))))
+  (car (s-lines (shell-command-to-string (format "pass %s" entry)))))
 
 ;;;###autoload
 (defun password-store-clear ()
