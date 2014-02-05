@@ -80,6 +80,7 @@ after 45 seconds."
     (password-store-clear)
     (kill-new password)
     (setq password-store-kill-ring-pointer kill-ring-yank-pointer)
+    (message "Copied %s to the kill ring. Will clear in 45 seconds." entry)
     (run-at-time "45 sec" nil 'password-store-clear)))
 
 ;;;###autoload
