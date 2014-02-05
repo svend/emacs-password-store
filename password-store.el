@@ -66,7 +66,7 @@ Returns the first line of the password data."
       (progn
 	(setcar password-store-kill-ring-pointer "")
 	(setq password-store-kill-ring-pointer nil)
-	(message "Password cleared"))))
+	(message "Password cleared."))))
 
 ;;;###autoload
 (defun password-store-copy (entry)
