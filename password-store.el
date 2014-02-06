@@ -58,6 +58,7 @@
     (error "File %s does not exist" file)))
 
 (defun password-store--decrypt-entry (entry)
+  "Return decrypted content for ENTRY."
   (password-store--decrypt-file
    (password-store--entry-to-file entry)))
 
