@@ -42,21 +42,34 @@
   (or (getenv "PASSWORD_STORE_DIR")
       "~/.password-store"))
 
+(defun password-store--entry-to-file (entry)
+  (concat (f-join (password-store-dir) entry) ".gpg"))
+
+(defun password-store--file-to-entry (file)
+  (f-no-ext (f-relative file (password-store-dir))))
+
+(defun password-store--decrypt-file (file)
+  (shell-command-to-string
+   (format "gpg -d --quiet --yes --batch %s 2>/dev/null" file)))
+
+(defun password-store--decrypt-entry (entry)
+  (password-store--decrypt-file
+   (password-store--entry-to-file entry)))
+
 (defun password-store-list (&optional subdir)
   "List password entries under SUBDIR."
   (unless subdir (setq subdir ""))
   (let ((dir (f-join (password-store-dir) subdir)))
     (if (f-directory? dir)
-	(mapcar 'f-no-ext
-		(mapcar (lambda (file) (f-relative file (password-store-dir)))
-			(f-files dir (lambda (file) (equal (f-ext file) "gpg")) t))))))
+	(mapcar 'password-store--file-to-entry
+		(f-files dir (lambda (file) (equal (f-ext file) "gpg")) t)))))
 
 ;;;###autoload
 (defun password-store-get (entry)
   "Return password for ENTRY.
 
 Returns the first line of the password data."
-  (car (s-lines (shell-command-to-string (format "pass %s" entry)))))
+  (car (s-lines (password-store--decrypt-entry entry))))
 
 ;;;###autoload
 (defun password-store-clear ()
