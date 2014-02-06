@@ -52,8 +52,10 @@
 
 (defun password-store--decrypt-file (file)
   "Return unencrypted content of FILE."
-  (shell-command-to-string
-   (format "gpg -d --quiet --yes --batch %s 2>/dev/null" file)))
+  (if (f-file? file)
+      (shell-command-to-string
+       (format "gpg -d --quiet --yes --batch %s 2>/dev/null" file))
+    (error "File %s does not exist" file)))
 
 (defun password-store--decrypt-entry (entry)
   (password-store--decrypt-file
@@ -110,6 +112,6 @@ avoid sending a password to the browser."
     (if (or (string-prefix-p "http://" url)
 	    (string-prefix-p "https://" url))
 	(browse-url url)
-      (user-error "%s" "String does not look like a URL"))))
+      (error "%s" "String does not look like a URL"))))
 
 ;;; password-store.el ends here
