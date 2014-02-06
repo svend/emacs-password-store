@@ -43,12 +43,15 @@
       "~/.password-store"))
 
 (defun password-store--entry-to-file (entry)
+  "Return file name corresponding to ENTRY."
   (concat (f-join (password-store-dir) entry) ".gpg"))
 
 (defun password-store--file-to-entry (file)
+  "Return entry name corresponding to FILE."
   (f-no-ext (f-relative file (password-store-dir))))
 
 (defun password-store--decrypt-file (file)
+  "Return unencrypted content of FILE."
   (shell-command-to-string
    (format "gpg -d --quiet --yes --batch %s 2>/dev/null" file)))
 
