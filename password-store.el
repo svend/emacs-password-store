@@ -1,4 +1,4 @@
-;;; password-store.el --- Password store (pass) support -*- lexical-binding: t; -*-
+;;; password-store.el --- Password store (pass) support
 
 ;; Copyright (C) 2014 Svend Sorensen <svend@ciffer.net>
 
