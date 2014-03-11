@@ -103,6 +103,12 @@ after 45 seconds."
     (run-at-time "45 sec" nil 'password-store-clear)))
 
 ;;;###autoload
+(defun password-store-remove (entry)
+  "Remove existing password for ENTRY."
+  (interactive (list (completing-read "Password entry: " (password-store-list))))
+  (message (s-chomp (shell-command-to-string (format "pass rm -f %s" entry)))))
+
+;;;###autoload
 (defun password-store-url (entry)
   "Browse URL stored in ENTRY.
 
