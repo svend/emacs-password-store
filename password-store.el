@@ -103,6 +103,13 @@ after 45 seconds."
     (run-at-time "45 sec" nil 'password-store-clear)))
 
 ;;;###autoload
+(defun password-store-insert (entry password)
+  "Insert a new ENTRY containing PASSWORD."
+  (interactive (list (read-string "Password entry: ")
+		     (read-passwd "Password: " t)))
+  (message (s-chomp (shell-command-to-string (format "echo %s | pass insert -m %s" password entry)))))
+
+;;;###autoload
 (defun password-store-remove (entry)
   "Remove existing password for ENTRY."
   (interactive (list (completing-read "Password entry: " (password-store-list))))
