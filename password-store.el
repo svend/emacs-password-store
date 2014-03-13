@@ -50,17 +50,15 @@
   "Return entry name corresponding to FILE."
   (f-no-ext (f-relative file (password-store-dir))))
 
-(defun password-store--decrypt-file (file)
-  "Return unencrypted content of FILE."
-  (if (f-file? file)
-      (shell-command-to-string
-       (format "gpg -d --quiet --yes --batch %s 2>/dev/null" file))
-    (error "File %s does not exist" file)))
+(defun password-store--entry-exists-p (entry)
+  "Return t if ENTRY exists."
+  (f-file? (password-store--entry-to-file entry)))
 
 (defun password-store--decrypt-entry (entry)
   "Return decrypted content for ENTRY."
-  (password-store--decrypt-file
-   (password-store--entry-to-file entry)))
+  (if (password-store--entry-exists-p entry)
+      (shell-command-to-string (format "pass show %s" entry))
+    (error "Entry %s does not exist" entry)))
 
 (defun password-store-list (&optional subdir)
   "List password entries under SUBDIR."
