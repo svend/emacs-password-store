@@ -1,28 +1,30 @@
 # Emacs password-store
 
-This package provides functions for working with pass ("the
-standard Unix password manager").
+This package provides functions for working with pass ("the standard
+Unix password manager").
 
 http://www.zx2c4.com/projects/password-store
 
-## Generate password using `pass`
+## Setup
 
-	$ pass generate example 10
-	[master 68eaa05] Added generated password for example to store.
-	 1 file changed, 0 insertions(+), 0 deletions(-)
-	 create mode 100644 example.gpg
-	The generated password to example is:
-	O#d5!{shRL
+The pass application must be installed and set up. See the pass
+website for instructions
 
-## Get password in Emacs
-
-Lisp:
-
-	(password-store-get "example") ; Returns "O#d5!{shRL"
+## Example usage
 
 Interactive:
 
+	M-x password-store-insert
+	Password entry: example
+	Password: ........
+	Confirm password: ........
+	
 	M-x password-store-copy
 	Password entry: example
 	Copied example to the kill ring. Will clear in 45 seconds.
 	Password cleared.
+
+Lisp:
+
+	(password-store-insert "example" "password")
+	(password-store-get "example") ; Returns "password"
