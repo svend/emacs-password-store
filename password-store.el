@@ -131,4 +131,10 @@ avoid sending a password to the browser."
 	(browse-url url)
       (error "%s" "String does not look like a URL"))))
 
+;;;###autoload
+(defun password-store-version ()
+  "Show version of pass executable."
+  (interactive)
+  (message (s-chomp (password-store--run "version"))))
+
 ;;; password-store.el ends here
