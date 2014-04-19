@@ -110,7 +110,7 @@ after 45 seconds."
   "Insert a new ENTRY containing PASSWORD."
   (interactive (list (read-string "Password entry: ")
 		     (read-passwd "Password: " t)))
-  (message (s-chomp (shell-command-to-string (format "echo %s | pass insert -m %s" password entry)))))
+  (message (s-chomp (shell-command-to-string (format "echo %s | %s insert -m %s" password pass-executable entry)))))
 
 ;;;###autoload
 (defun password-store-remove (entry)
