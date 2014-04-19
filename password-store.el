@@ -34,6 +34,25 @@
 (require 'f)
 (require 's)
 
+(defvar pass-executable
+  (executable-find "pass")
+  "Pass executable.")
+
+(defun password-store--run (&rest args)
+  "Run pass with ARGS.
+
+Returns the output on success, or outputs error message on
+failure."
+  (with-temp-buffer
+    (let ((exit-code
+	   (apply 'call-process
+		  (append
+		   (list pass-executable nil (current-buffer) nil)
+		   args))))
+      (if (zerop exit-code)
+	  (buffer-string)
+	(error (s-chomp (buffer-string)))))))
+
 (defvar password-store-kill-ring-pointer nil
   "The tail of of the kill ring ring whose car is the password.")
 
