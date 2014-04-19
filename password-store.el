@@ -61,23 +61,9 @@ failure."
   (or (getenv "PASSWORD_STORE_DIR")
       "~/.password-store"))
 
-(defun password-store--entry-to-file (entry)
-  "Return file name corresponding to ENTRY."
-  (concat (f-join (password-store-dir) entry) ".gpg"))
-
 (defun password-store--file-to-entry (file)
   "Return entry name corresponding to FILE."
   (f-no-ext (f-relative file (password-store-dir))))
-
-(defun password-store--entry-exists-p (entry)
-  "Return t if ENTRY exists."
-  (f-file? (password-store--entry-to-file entry)))
-
-(defun password-store--decrypt-entry (entry)
-  "Return decrypted content for ENTRY."
-  (if (password-store--entry-exists-p entry)
-      (shell-command-to-string (format "pass show %s" entry))
-    (error "Entry %s does not exist" entry)))
 
 (defun password-store-list (&optional subdir)
   "List password entries under SUBDIR."
@@ -92,7 +78,7 @@ failure."
   "Return password for ENTRY.
 
 Returns the first line of the password data."
-  (car (s-lines (password-store--decrypt-entry entry))))
+  (car (s-lines (password-store--run "show" entry))))
 
 ;;;###autoload
 (defun password-store-clear ()
@@ -130,7 +116,7 @@ after 45 seconds."
 (defun password-store-remove (entry)
   "Remove existing password for ENTRY."
   (interactive (list (completing-read "Password entry: " (password-store-list))))
-  (message (s-chomp (shell-command-to-string (format "pass rm -f %s" entry)))))
+  (message (s-chomp (password-store--run "rm" "-f" entry))))
 
 ;;;###autoload
 (defun password-store-url (entry)
