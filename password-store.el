@@ -38,6 +38,9 @@
   (executable-find "pass")
   "Pass executable.")
 
+(defconst password-store-timeout 45
+  "Number of seconds to wait before clearing the password.")
+
 (defun password-store--run (&rest args)
   "Run pass with ARGS.
 
@@ -106,14 +109,14 @@ Returns the first line of the password data."
 
 Clear previous password from kill ring.  Pointer to kill ring is
 stored in `password-store-kill-ring-pointer'.  Password is cleared
-after 45 seconds."
+after `password-store-timeout' seconds."
   (interactive (list (completing-read "Password entry: " (password-store-list))))
   (let ((password (password-store-get entry)))
     (password-store-clear)
     (kill-new password)
     (setq password-store-kill-ring-pointer kill-ring-yank-pointer)
-    (message "Copied %s to the kill ring. Will clear in 45 seconds." entry)
-    (run-at-time "45 sec" nil 'password-store-clear)))
+    (message "Copied %s to the kill ring. Will clear in %s seconds." entry password-store-timeout)
+    (run-at-time password-store-timeout nil 'password-store-clear)))
 
 ;;;###autoload
 (defun password-store-insert (entry password)
