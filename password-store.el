@@ -61,6 +61,10 @@ failure."
   (or (getenv "PASSWORD_STORE_DIR")
       "~/.password-store"))
 
+(defun password-store--entry-to-file (entry)
+  "Return file name corresponding to ENTRY."
+  (concat (f-join (password-store-dir) entry) ".gpg"))
+
 (defun password-store--file-to-entry (file)
   "Return entry name corresponding to FILE."
   (f-no-ext (f-relative file (password-store-dir))))
@@ -72,6 +76,12 @@ failure."
     (if (f-directory? dir)
 	(mapcar 'password-store--file-to-entry
 		(f-files dir (lambda (file) (equal (f-ext file) "gpg")) t)))))
+
+;;;###autoload
+(defun password-store-edit (entry)
+  "Edit password for ENTRY."
+  (interactive (list (completing-read "Password entry: " (password-store-list))))
+  (find-file (password-store--entry-to-file entry)))
 
 ;;;###autoload
 (defun password-store-get (entry)
