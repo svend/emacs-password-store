@@ -119,6 +119,20 @@ after `password-store-timeout' seconds."
     (run-at-time password-store-timeout nil 'password-store-clear)))
 
 ;;;###autoload
+(defun password-store-generate (entry &optional password-length)
+  "Generate a new password for ENTRY with PASSWORD-LENGTH.
+
+Default PASSWORD-LENGTH is 8."
+  (interactive (list (read-string "Password entry: ")
+		     (when current-prefix-arg
+		       (abs (prefix-numeric-value current-prefix-arg)))))
+  (unless password-length (setq password-length 8))
+  ;; A message with the output of the command is not printed because
+  ;; the output contains the password.
+  (password-store--run "generate" "-f" entry (number-to-string password-length))
+  nil)
+
+;;;###autoload
 (defun password-store-insert (entry password)
   "Insert a new ENTRY containing PASSWORD."
   (interactive (list (read-string "Password entry: ")
