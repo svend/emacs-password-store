@@ -82,7 +82,10 @@ failure."
 
 ;;;###autoload
 (defun password-store-edit (entry)
-  "Edit password for ENTRY."
+  "Edit password for ENTRY.
+
+This edits the password file directly in Emacs, so changes will
+need to be commited manually if git is being used."
   (interactive (list (completing-read "Password entry: " (password-store-list))))
   (find-file (password-store--entry-to-file entry)))
 
