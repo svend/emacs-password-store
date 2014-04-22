@@ -1,4 +1,4 @@
-;;; password-store.el --- Password store (pass) support
+ ;;; password-store.el --- Password store (pass) support
 
 ;; Copyright (C) 2014 Svend Sorensen <svend@ciffer.net>
 
@@ -37,6 +37,9 @@
 (defvar pass-executable
   (executable-find "pass")
   "Pass executable.")
+
+(defconst password-store-password-length 8
+  "Default password length.")
 
 (defconst password-store-timeout 45
   "Number of seconds to wait before clearing the password.")
@@ -125,11 +128,11 @@ after `password-store-timeout' seconds."
 (defun password-store-generate (entry &optional password-length)
   "Generate a new password for ENTRY with PASSWORD-LENGTH.
 
-Default PASSWORD-LENGTH is 8."
+Default PASSWORD-LENGTH is `password-store-password-length'."
   (interactive (list (read-string "Password entry: ")
 		     (when current-prefix-arg
 		       (abs (prefix-numeric-value current-prefix-arg)))))
-  (unless password-length (setq password-length 8))
+  (unless password-length (setq password-length password-store-password-length))
   ;; A message with the output of the command is not printed because
   ;; the output contains the password.
   (password-store--run "generate" "-f" entry (number-to-string password-length))
