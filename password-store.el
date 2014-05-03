@@ -51,13 +51,13 @@ Returns the output on success, or outputs error message on
 failure."
   (with-temp-buffer
     (let ((exit-code
-       (apply 'call-process
-          (append
-           (list pass-executable nil (current-buffer) nil)
-           args))))
+           (apply 'call-process
+                  (append
+                   (list pass-executable nil (current-buffer) nil)
+                   args))))
       (if (zerop exit-code)
-      (buffer-string)
-    (error (s-chomp (buffer-string)))))))
+          (buffer-string)
+        (error (s-chomp (buffer-string)))))))
 
 (defvar password-store-kill-ring-pointer nil
   "The tail of of the kill ring ring whose car is the password.")
@@ -80,8 +80,8 @@ failure."
   (unless subdir (setq subdir ""))
   (let ((dir (f-join (password-store-dir) subdir)))
     (if (f-directory? dir)
-    (mapcar 'password-store--file-to-entry
-        (f-files dir (lambda (file) (equal (f-ext file) "gpg")) t)))))
+        (mapcar 'password-store--file-to-entry
+                (f-files dir (lambda (file) (equal (f-ext file) "gpg")) t)))))
 
 ;;;###autoload
 (defun password-store-edit (entry)
@@ -105,9 +105,9 @@ Returns the first line of the password data."
   (interactive)
   (if password-store-kill-ring-pointer
       (progn
-    (setcar password-store-kill-ring-pointer "")
-    (setq password-store-kill-ring-pointer nil)
-    (message "Password cleared."))))
+        (setcar password-store-kill-ring-pointer "")
+        (setq password-store-kill-ring-pointer nil)
+        (message "Password cleared."))))
 
 ;;;###autoload
 (defun password-store-copy (entry)
@@ -130,8 +130,8 @@ after `password-store-timeout' seconds."
 
 Default PASSWORD-LENGTH is `password-store-password-length'."
   (interactive (list (read-string "Password entry: ")
-             (when current-prefix-arg
-               (abs (prefix-numeric-value current-prefix-arg)))))
+                     (when current-prefix-arg
+                       (abs (prefix-numeric-value current-prefix-arg)))))
   (unless password-length (setq password-length password-store-password-length))
   ;; A message with the output of the command is not printed because
   ;; the output contains the password.
@@ -142,7 +142,7 @@ Default PASSWORD-LENGTH is `password-store-password-length'."
 (defun password-store-insert (entry password)
   "Insert a new ENTRY containing PASSWORD."
   (interactive (list (read-string "Password entry: ")
-             (read-passwd "Password: " t)))
+                     (read-passwd "Password: " t)))
   (message (s-chomp (shell-command-to-string (format "echo %s | %s insert -m -f %s" password pass-executable entry)))))
 
 ;;;###autoload
@@ -160,8 +160,8 @@ avoid sending a password to the browser."
   (interactive (list (completing-read "Password entry: " (password-store-list))))
   (let ((url (password-store-get entry)))
     (if (or (string-prefix-p "http://" url)
-        (string-prefix-p "https://" url))
-    (browse-url url)
+            (string-prefix-p "https://" url))
+        (browse-url url)
       (error "%s" "String does not look like a URL"))))
 
 ;;;###autoload
